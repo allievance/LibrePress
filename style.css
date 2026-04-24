@@ -1,0 +1,102 @@
+* {
+	margin: 0;
+	padding: 0;
+	box-sizing: border-box;
+}
+
+body {
+	font-family: 'Inter', sans-serif;
+	background-color: #ffffff;
+	color: #111111;
+}
+
+header {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	padding: 1.5rem 3rem;
+	border-bottom: 1px solid #e0e0e0;
+}
+
+.site-logo {
+	height: 40px;
+	width: auto;
+}
+
+nav a {
+	text-decoration: none;
+	color: #111111;
+	font-size: 0.9rem;
+}
+
+/* Hero */
+
+.hero {
+	text-align: center;
+	padding: 4rem 2rem 2rem;
+}
+
+.hero h1 {
+	font-size: 2.8rem;
+	font-weight: 700;
+	margin-bottom: 1rem;
+}
+
+.hero p {
+	font-size: 1rem;
+	color: #555;
+	max-width: 600px;
+	margin: 0 auto;
+}
+
+/* Book Grid*/
+
+.book-grid {
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: center;
+	gap: 2rem;
+	padding: 3rem 2 rem;
+	max-width: 1200px;
+	margin: 0 auto;
+}
+
+.book-grid a {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	text-decoration: none;
+}
+
+.book-grid img {
+        width: 150px;
+        height: 220px;
+        object-fit: cover;
+}
+
+/* Footer */
+
+footer {
+	text-align: center;
+	padding: 2rem;
+	border-top: 1px solid #e0e0e0;
+	font-size: 0.85rem;
+	color: #555;
+}
+
+footer a {
+	color: #111;
+	text-decoration: none;
+	margin: 0 0.5rem;
+}
+
+.payment-icons {
+	margin-top: 1rem;
+}
+
+.payment-icons img {
+
+	width: 60px;
+	height: auto;
+}
+
