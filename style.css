@@ -52,8 +52,8 @@ nav a {
 /* Book Grid*/
 
 .book-grid {
-	display: flex;
-	flex-wrap: wrap;
+	display: grid;
+	grid-template-columns: repeat(4, 200px);
 	justify-content: center;
 	gap: 2rem;
 	padding: 3rem 2 rem;
