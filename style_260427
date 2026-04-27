@@ -1,0 +1,140 @@
+* {
+	margin: 0;
+	padding: 0;
+	box-sizing: border-box;
+}
+
+body {
+	font-family: 'Inter', sans-serif;
+	background-color: #ffffff;
+	color: #111111;
+}
+
+header {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	padding: 1.5rem 3rem;
+	border-bottom: 1px solid #e0e0e0;
+}
+
+.site-logo {
+	height: 40px;
+	width: auto;
+	max-width: 200px;
+}
+
+nav {
+	display: flex;
+	align-items: center;
+	gap: 1.5rem;
+}
+
+nav a {
+	text-decoration: none;
+	color: #111;
+}
+
+.country-selector {
+	border: 1px solid #3f78ff;
+	border-radius: 999px;
+	padding: 0.3rem 1rem;
+	color: #111;
+	font-size: 0.9rem;
+}
+
+.cart-link {
+	display: flex;
+	align-items: center;
+	gap: 0.4rem;
+	border: 1px solid #3f78ff;
+	border-radius: 999px;
+	padding: 0.3rem 0.8rem;
+	color: #111;
+}
+
+.cart-icon {
+	width: 24px;
+	height: 24px;
+	object-fit: contain;
+}
+
+.cart-count {
+	font-size: 0.9rem;
+	font-weight: 600;
+}
+/* Hero */
+
+.hero {
+	text-align: center;
+	padding: 4rem 2rem 2rem;
+}
+
+.hero h1 {
+	font-size: 2.8rem;
+	font-weight: 700;
+	margin-bottom: 1rem;
+}
+
+.hero p {
+	font-size: 1rem;
+	color: #555;
+	max-width: 600px;
+	margin: 0 auto;
+}
+
+/* Book Grid*/
+
+.book-grid {
+	display: grid;
+	grid-template-columns: repeat(3, 1fr);
+	justify-content: center;
+	gap: 2rem;
+	padding: 3rem 2 rem;
+	max-width: 1200px;
+	margin: 0 auto;
+}
+
+.book-grid a {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	text-decoration: none;
+}
+
+.book-grid img {
+        width: 100%;
+        height: auto;
+        object-fit: block;
+}
+
+/* Footer */
+
+footer {
+	text-align: center;
+	padding: 2rem;
+	border-top: 1px solid #e0e0e0;
+	font-size: 0.85rem;
+	color: #555;
+}
+
+footer a {
+	color: #111;
+	text-decoration: none;
+	margin: 0 0.5rem;
+}
+
+.payment-icons {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	gap: 0.5rem;
+	margin-top: 1rem;
+}
+
+.payment-icons img {
+
+	width: 45px;
+	height: auto;
+}
+
