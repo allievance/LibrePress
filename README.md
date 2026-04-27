@@ -22,5 +22,3 @@ This is not a marketplace. It is a system.
 - 🔗 Order automation pipelines (API-first)
 - 🧩 Modular architecture (Flask-based)
 - ⚙️ Designed for self-hosting and extensibility
-
-## Architecture Overview
