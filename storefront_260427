@@ -1,0 +1,68 @@
+<!DOCTYPEhtml>
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>LibrePress</title>
+	<link rel="stylesheet" href="style.css">
+ 
+</head>
+<body>
+
+	<header>
+	  <a href="/"><img src="librepress_logo.png" alt="LibrePress" class="site-logo"></a>
+	 <nav>
+	  <a href="/select_country" class="country-selector">US (USD)</a>
+	  <a href="/cart" class="cart-link">
+	   <img src="cart.png" alt="Cart" class="cart-icon">
+	   <span class="cart-count">0</span>
+	  </a>
+	 </nav>
+	</header>
+
+<main>
+	<div class="book-grid">
+	 <a href="/book?pk=1">
+	  <img src="TheBookOfTheCourtier.png" alt="The Book of the Courtier">
+	 </a>
+	 <a href="/book?pk=2">
+	  <img src="TheEgoAndItsOwn.png" alt="The Ego and Its Own">
+	 </a>
+	 <a href="/book?pk=3">
+	  <img src="TheConquestOfBread.png" alt="The Conquest of Bread">
+	 </a> 
+	 <a href="/book?pk=4">
+	  <img src="TheCrisisOfTheModernWorld.png" alt="The Crisis of the Modern World">
+	 </a>
+	 <a href="/book?pk=5">
+	  <img src="GodAndTheState.png" alt="God and the State">
+	 </a>
+	 <a href="/book?pk=6">
+	  <img src="TheKingInYellow.png" alt="The King In Yellow">
+	 </a>
+	 <a href="/book?pk=7">
+	  <img src="TheKybalion.png" alt="The Kybalion">
+	 </a>
+	 <a href="/book?pk=8">
+	  <img src="Marxism.png" alt="Marxism: A Primer">
+	 </a>
+	 <a href="/book?pk=9">
+	  <img src="AnOutlineOfOccultScience.png" alt="An Outline of Occult Science">
+	 </a>
+	 <a href="/book?pk=10">
+	  <img src="TheRevoltOfTheMasses.png" alt="The Revolt of the Masses">
+	 </a>
+	 <!-- more books -->
+	</div>
+</main>
+
+<footer>
+	<a href="/faq">About LibrePress</a>
+	<a href="/rss.xml">RSS Feed</a>
+	<div class="payment-icons">
+	 <img src="visa-logo.png" alt="Visa">
+	 <img src="masterCard-logo.png" alt="Mastercard">
+	</div>
+</footer>
+
+</body>
+</html>
