@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>{% block title %}LibrePress{% endblock %}</title>
+	<link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+
+<body>
+
+	<header>
+	 <a href="/"><img src="{{ url_for('static', filename='img/librepress_logo.png') }}" alt="LibrePress" class="site-logo"></a>
+	 <nav>
+	  <a href="/select_country" class="country-selector">US (USD)</a>
+	  <a href="/cart" class="cart-link">
+	   <img src="{{ url_for('static', filename='img/cart.png') }}" alt="Cart" class="cart-icon">
+	   <span class="cart-count">{{ session.get('cart', [])|length }}</span>
+	  </a>
+	 </nav>
+	</header>
+
+{% block content %}{% endblock %}
+
+	<footer>
+	 <a href="/faq">About LibrePress</a>
+	 <a href="/rss.xml">RSS Feed</a>
+	 <div class="payment-icons">
+	  <img src="{{ url_for('static', filename='img/visa-logo.png') }}" alt="Visa">
+	  <img src="{{ url_for('static', filename='img/Mastercard-Logo.png') }}" alt="MasterCard">
+	 </div>
+	</footer>
+
+</body>
+</html>

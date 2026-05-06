@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+
+{% block title%}Cart | LibrePress{% endblock %}
+
+{% block content %}
+<main class="cart-page">
+    <h1>Your Cart</h1>
+
+    {% if books %}
+    <div class="cart-items">
+        {% for book in books %}
+        <div class="cart-item">
+            <img src="{{ url_for('static', filename='img/' + book.cover_image) }}" alt="{{ book.title }}">
+            <div class="cart-item-details">
+                <h2>{{ book.title }}</h2>
+                <h3>{{ book.author }}</h3>
+                <p class="cart-item-price">${{ book.price }}</p>
+            </div>
+            <a href="/remove_from_cart?pk={{ book.id }}" class="remove-item">Remove</a>
+         </div>
+         {% endfor %}
+    </div>
+
+    <div class="cart-total">
+        <p>Total: <strong>${{ "%.2f"|format(total) }}</strong></p>
+        <a href="/checkout" class="add-to-cart">Checkout</a>
+    </div>
+
+    {% else %}
+    <p class="cart-empty">Your cart is empty. <a href="Continue shopping"></a>.</p>
+    {% endif %}
+
+</main>
+{% endblock %}
+
+

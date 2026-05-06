@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+
+{% block title %}{{ book.title }} | LibrePress{% endblock %}
+
+{% block content %}
+<main class="product-page">
+    <div class="product-cover">
+        <img src="{{ url_for('static', filename='img/' + book.cover_image) }}" alt="{{ book.title }}">
+    </div>
+    <div class="product-details">
+        <h1>{{ book.title }}</h1>
+        <h2>{{ book.author }}</h2>
+        <h3>{{ book.language }}</h3>
+        <p class="product-price">${{ book.price }}</p>
+        <p class="product-description">{{ book.description | safe }}</p>
+        <h2 class="product-details-heading">Product Details</h2>
+        <ul class="product-specs">
+            <li><strong>Book Size:</strong> A5 (5.83 x 8.27 in / 148 x 210 mm)</li>
+            <li><strong>Page Count:</strong> {{ book.page_count }} Pages</li>
+            <li><strong>Interior Color:</strong> Standard Black and White</li>
+            <li><strong>Paper Type:</strong> 60# Cream — Uncoated</li>
+            <li><strong>Binding Type:</strong> Paperback Perfect Bound</li>
+            <li><strong>Cover Finish:</strong> Matte</li>
+        </ul>
+        <a href="/add_to_cart?pk={{ book.id }}" class="add-to-cart">Add to cart</a>
+    </div>
+</main>
+{% endblock %}
+

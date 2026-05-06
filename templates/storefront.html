@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+
+{% block title %}LibrePress{% endblock %}
+
+{% block content %}
+<main>
+	<div class="hero">
+		<h1> Foundational Texts for the Discerning Reader</h1>
+		<p>Modern mass culture dissolves distinction. LibrePress publishes works that resist dissolution.</p>
+	</div>
+
+	<div class="book-grid">
+		{% for book in books %}
+		<div class="book-item">
+			<a href="/book?pk={{ book.id }}">
+				<img src="{{ url_for('static', filename='img/' + book.cover_image) }}" alt="{{ book.title }}">
+			</a>
+			<a href="/book?pk={{ book.id }}" class="buy-now">Buy Now</a>
+		</div>
+		{% endfor %}
+	</div>
+</main>
+{% endblock %}

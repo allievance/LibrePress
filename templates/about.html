@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+
+{% block title %}About | LibrePress{% endblock %}
+
+{% block content %}
+<main class="about-page">
+    <div class="product-cover">
+        <img src="{{ url_for('static', filename='img/TheBookOfTheCourtier_Mockup.png') }}" alt="LibrePress">
+    </div>
+    <div class="about-title">
+        <h1>About</h1>
+        <p class="about-section">LibrePress is a publisher of hard-to-find
+        and out-of-print books. LibrePress uses a print-on-demand service
+        (Lulu) to provide books. This allows us to produce and sell rare
+        books without the massive financial risk of preprinting
+        hundreds of books.</p>
+        <p class="about-section">Lulu handles both printing and shipping,
+        which means that in the rare case of there being issues with either,
+        such as shipping delays or printing errors, contact them here.</p>
+        <p class="about-section">We are often looking for books to add to our
+        collection. Suggestions may be sent to info@librepress.net. We have
+        a preference for occult and philosophical books, and are open to publishing in
+        English, Latin, or Greek. Note that for legal reasons we only print
+        books that are in the public domain in the United States and Europe.
+        Thankfully, that makes nearly everything before 1900 fair game.</p>
+        <p class="about-section">The process of designing and typesetting rare
+        books, although rewarding, is not often financially so. If you would
+        like to support our efforts, you may donate to our long-term fund.</p>
+    </div>
+</main>
+{% endblock %}
+
