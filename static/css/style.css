@@ -1,6 +1,6 @@
 @font-face {
 	font-family: 'Britanica Black';
-	src: url('fonts/britanica-black.ttf') format('truetype');
+	src: url('/static/fonts/britanica-black.ttf') format('truetype');
 	font-weight: 900;
 	font-style: normal;
 }
@@ -354,4 +354,32 @@ footer a {
 .cart-empty a {
 	color: #3f78ff;
 	text-decoration: none;
+}
+
+/* Form */
+
+.form-group {
+	display: flex;
+	flex-direction: column;
+	margin-bottom: 1.2rem;
+}
+
+.form-group label {
+	font-size: 1rem;
+	font-weight: 600;
+	margin-bottom: 0.3rem;
+	color: #111;
+}
+
+.form-group input {
+	padding: 0.6rem 0.8rem;
+	border: 1px solid #ccc;
+	border-radius: 4px;
+	font-size: 1rem;
+	font-family: inherit;
+}
+
+.form-group input:focus {
+	outline: none;
+	border-color: #3f78ff;
 }
