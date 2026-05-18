@@ -105,8 +105,8 @@ def checkout():
         payment_method_types=['card'],
         line_items=line_items,
         mode='payment',
-        success_url='http://127.0.0.1:5000/success',
-        cancel_url='http://127.0.0.1:5000/cart'
+        success_url='https://librepress-production.up.railway.app/success',
+        cancel_url='https://librepress-production.up.railway.app/cart'
     )
 
     return redirect(checkout_session.url)
@@ -134,8 +134,8 @@ def success():
             ],
             "shipping_address": {
                 "name": shipping.get('name'),
-                "address1": shipping.get('address1'),
-                "address2": shipping.get('address2'),
+                "street1": shipping.get('street1'),
+                "street2": shipping.get('street2'),
                 "city": shipping.get('city'),
                 "state": shipping.get('state'),
                 "postcode": shipping.get('zip_code'),
