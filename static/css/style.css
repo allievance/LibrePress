@@ -1,5 +1,5 @@
 @media (max-width: 768px) {
-	.book.grid {
+	.book-grid {
 		grid-template-columns: repeat(2, 1fr);
 		padding: 1.5rem 1rem;
 		gap: 1rem;
