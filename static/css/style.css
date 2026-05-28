@@ -1,50 +1,3 @@
-@media (max-width: 768px) {
-	.book-grid {
-		grid-template-columns: repeat(2, 1fr);
-		padding: 1.5rem 1rem;
-		gap: 1rem;
-	}
-
-	.hero {
-		padding: 2rem 1rem 1rem;
-	}
-
-	.hero h1 {
-		font-size: 1.8rem;
-	}
-
-	.hero p {
-		font-size: 0.95rem;
-	}
-
-	header {
-		padding: 1rem 1.5rem;
-	}
-
-	.site-logo {
-		height: 30px;
-	}
-
-	.product-page {
-		flex-direction: column;
-		padding: 1.5rem 1rem;
-		gap: 2rem;
-	}
-
-	.product-cover img {
-		width: 110%;
-	}
-
-	.cart-page {
-		padding: 1.5rem 1rem;
-	}
-
-	.cart-item {
-		flex-direction: column;
-		align-items: flex-start;
-	}
-}
-
 @font-face {
 	font-family: 'Britanica Black';
 	src: url('/static/fonts/britanica-black.ttf') format('truetype');
@@ -429,4 +382,51 @@ footer a {
 .form-group input:focus {
 	outline: none;
 	border-color: #3f78ff;
+}
+
+@media (max-width: 768px) {
+	.book-grid {
+		grid-template-columns: repeat(2, 1fr);
+		padding: 1.5rem 1rem;
+		gap: 1rem;
+	}
+
+	.hero {
+		padding: 2rem 1rem 1rem;
+	}
+
+	.hero h1 {
+		font-size: 1.8rem;
+	}
+
+	.hero p {
+		font-size: 0.95rem;
+	}
+
+	header {
+		padding: 1rem 1.5rem;
+	}
+
+	.site-logo {
+		height: 30px;
+	}
+
+	.product-page {
+		flex-direction: column;
+		padding: 1.5rem 1rem;
+		gap: 2rem;
+	}
+
+	.product-cover img {
+		width: 110%;
+	}
+
+	.cart-page {
+		padding: 1.5rem 1rem;
+	}
+
+	.cart-item {
+		flex-direction: column;
+		align-items: flex-start;
+	}
 }
