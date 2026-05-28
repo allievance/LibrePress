@@ -4,6 +4,10 @@ from models import db, Book
 with app.app_context():
     db.create_all()
 
+    # Clear existing books
+    Book.query.delete()
+    db.session.commit()
+
     books = [
         Book(title="The Book of the Courtier", author="Baldassare Castiglione", language="English", price=51.48, description="A foundational Renaissance dialogue, <i>The Book of the Courtier</i> explores the qualities of the ideal noble through elegant conversation set in the court of Urbino. Participants debate grace, virtue, wit, and the elusive art of sprezzatura, or effortless mastery. The work reflects a world where appearance and character intertwine, shaping political and social success. This special edition contains several illustrated plates and over 300 annotations, guiding modern readers through historical context and linguistic nuance. Both a manual of conduct and a philosophical meditation, it remains a timeless study of human excellence, performance, and the subtle dynamics of power.", cover_image="TheBookOfTheCourtier.png", page_count=750),
         Book(title="The Ego and Its Own", author="Max Stirner", language="English", price=40.44, description="Max Stirner's <i>The Ego and Its Own</i> is a radical exploration of individualism that dismantles all external authorities, including religion, morality, and the state. Stirner argues that abstract ideals, which he calls “spooks,” dominate human life by demanding submission to illusions. In their place, he proposes the sovereign individual, guided solely by self-interest and personal will. The work is provocative, irreverent, and deeply philosophical, challenging readers to confront the foundations of belief and obligation. Both celebrated and controversial, it has influenced anarchism, existentialism, and post-structural thought, offering a fierce defense of personal autonomy against all forms of imposed identity.", cover_image="TheEgoAndItsOwn.png", page_count=529),
@@ -19,4 +23,5 @@ with app.app_context():
 
     db.session.add_all(books)
     db.session.commit()
+    
     print("Database seeded.")
