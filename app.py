@@ -126,7 +126,7 @@ def success():
                     "printable_normalization": {
                         "cover": {"source_url": f"https://yourdomain.com/static/img/{book.cover_image}"},
                         "interior": {"source_url": f"https://yourdomain.com/static/img/{book.title}.pdf"},
-                        "pod_package_id": "0600X0900BWSTDPB060UW444MXX"
+                        "pod_package_id": "0583X0827BWSTDPB060UC444MXX"
                     },
                     "quantity": 1,
                     "title": book.title
@@ -148,6 +148,67 @@ def success():
     session.pop('cart', None)
     session.pop('shipping', None)
     return render_template('success.html')
+
+# Stripe Webhook
+
+@app.route('/webhook', methods=['POST'])
+def webhook():
+    payload = request.get_data()
+    sig_header = request.headers.get('Stripe-Signature')
+    webhook_secret = os.getenv('STRIPE_WEBHOOK_SECRET')
+
+    try:
+        event = stripe.Webhook.construct_event(
+            payload, sig_header, webhook_secret
+        )
+    except ValueError:
+        return 'Invalid payload', 400
+    except stripe.error.SignatureVerificationError:
+        return 'Invalid signature', 400
+
+    if event['type'] == 'checkout.session.completed':
+        session_data = event['data']['object']
+        customer_email = session_data.get('customer_details', {}).get('email')
+    
+        cart_ids = session.get('cart', [])
+        shipping = session.get('shipping', {})
+        books = Book.query.filter(Book.id.in_(cart_ids)).all()
+
+    for book in books:
+        order_data = {
+            "contact_email": customer_email,
+            "external_id": f"librepress-{book.id}-{session_data['id']}",
+            "line_items": [
+                {
+                    "printable_normalization": {
+                        "cover": {"source_url": f"https://librepress.us/static/img/{book.cover_image}"},
+                        "interior": {"source_url": f"https://librepress.us/static/pdf/{book.title}.pdf"},
+                        "pod_package_id": "0583X0827BWSTDPB060UC444MXX"
+                    },
+                    "quantity": 1,
+                    "title": book.title
+                }
+            ],
+            "shipping_address": {
+                "name": shipping.get('name'),
+                "street1": shipping.get('address1'),
+                "street2": shipping.get('address2'),
+                "city": shipping.get('city'),
+                "state_code": shipping.get('state'),
+                "postcode": shipping.get('zip_code'),
+                "country_code": shipping.get('country'),
+            },
+            "shipping_level": "MAIL"
+        }
+        
+        result = create_print_job(order_data)
+        
+        if result:
+            print(f"Print job created for {book.title}")
+        else:
+            print(f"Print job failed for {book.title}")
+
+    return 'OK', 200
 
 # Reseed function - DO NOT SHARE
 
