@@ -237,7 +237,7 @@ def page_not_found(e):
 # 500 - Internal Server Error
 
 @app.errorhandler(500)
-def page_not_found(e):
+def internal_server_error(e):
     return render_template('500.html'), 500
 
 # Reseed function - DO NOT SHARE
