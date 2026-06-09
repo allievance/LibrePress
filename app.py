@@ -1,7 +1,7 @@
 from dotenv import load_dotenv
 import os
 load_dotenv()
-from flask import Flask, render_template, request, abort, redirect, url_for, session, errorhandler
+from flask import Flask, render_template, request, abort, redirect, url_for, session
 import stripe
 from models import db, Book
 from lulu import create_print_job
@@ -230,13 +230,13 @@ def webhook():
 
 # 404 - Page Not Found
 
-@errorhandler(404)
+@app.errorhandler(404)
 def page_not_found(e):
     return render_template('404.html'), 404
 
 # 500 - Internal Server Error
 
-@errorhandler(500)
+@app.errorhandler(500)
 def page_not_found(e):
     return render_template('500.html'), 500
 
