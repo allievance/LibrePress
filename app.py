@@ -1,7 +1,7 @@
 from dotenv import load_dotenv
 import os
 load_dotenv()
-from flask import Flask, render_template, request, abort, redirect, url_for, session
+from flask import Flask, render_template, request, abort, redirect, url_for, session, errorhandler
 import stripe
 from models import db, Book
 from lulu import create_print_job
@@ -14,10 +14,14 @@ db.init_app(app)
 stripe.api_key = os.getenv('STRIPE_SECRET_KEY')
 STRIPE_PUBLISHABLE_KEY = os.getenv('STRIPE_PUBLISHABLE_KEY')
 
+# Storefront
+
 @app.route('/')
 def storefront():
     books = Book.query.all()
     return render_template('storefront.html', books=books)
+
+# Book listing
 
 @app.route('/book')
 def book():
@@ -27,9 +31,13 @@ def book():
     book = Book.query.get_or_404(int(pk))
     return render_template('book.html', book=book)
 
+# About page
+
 @app.route('/faq')
 def about():
     return render_template('about.html')
+
+# Add-to-cart
 
 @app.route('/add_to_cart')
 def add_to_cart():
@@ -43,12 +51,16 @@ def add_to_cart():
     session['cart'] = cart
     return redirect(url_for('cart'))
 
+# Cart
+
 @app.route('/cart')
 def cart():
     cart_ids = session.get('cart', [])
     books = Book.query.filter(Book.id.in_(cart_ids)).all()
     total = sum(book.price for book in books)
     return render_template('cart.html', books=books, total=total)
+
+# Remove-from-Cart
 
 @app.route('/remove_from_cart')
 def remove_from_cart():
@@ -62,12 +74,16 @@ def remove_from_cart():
     session['cart'] = cart
     return redirect(url_for('cart'))
 
+# Shipping
+
 @app.route('/shipping')
 def shipping():
     cart_ids =  session.get('cart', [])
     if not cart_ids:
         return redirect(url_for('cart'))
     return render_template('shipping.html')
+
+# Checkout
 
 @app.route('/checkout', methods=['POST'])
 def checkout():
@@ -110,6 +126,8 @@ def checkout():
     )
 
     return redirect(checkout_session.url)
+
+# Success
 
 @app.route('/success')
 def success():
@@ -209,6 +227,18 @@ def webhook():
             print(f"Print job failed for {book.title}")
 
     return 'OK', 200
+
+# 404 - Page Not Found
+
+@errorhandler(404)
+def page_not_found(e):
+    return render_template('404.html'), 404
+
+# 500 - Internal Server Error
+
+@errorhandler(500)
+def page_not_found(e):
+    return render_template('500.html'), 500
 
 # Reseed function - DO NOT SHARE
 
