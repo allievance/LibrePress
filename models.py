@@ -10,6 +10,8 @@ class Book(db.Model):
     price = db.Column(db.Float, nullable=False)
     description = db.Column(db.Text, nullable=False)
     cover_image = db.Column(db.String(200), nullable=False)
+    cover_pdf = db.Column(db.String(200))
+    interior_pdf = db.Column(db.String(200))
     page_count = db.Column(db.Integer)
 
 class Order(db.Model):
