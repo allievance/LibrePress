@@ -27,5 +27,3 @@ Books are designed, typeset, and listed once. Orders are fulfilled automatically
 - Automated Lulu print job creation on successful payment
 - Stripe webhook for production-grade order fulfillment
 - Responsive storefront optimized for mobile and desktop
-
-## Project Structure
