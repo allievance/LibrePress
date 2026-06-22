@@ -91,7 +91,7 @@ def checkout():
     if not cart_ids:
         return redirect(url_for('cart'))
     
-    session['shipping'] = {
+    shipping_data = {
         'name': request.form.get('name'),
         'email': request.form.get('email'),
         'street1': request.form.get('street1'),
@@ -101,6 +101,8 @@ def checkout():
         'zip_code': request.form.get('zip_code'),
         'country': request.form.get('country'),
     }
+
+    session['shipping'] = shipping_data
     
     books = Book.query.filter(Book.id.in_(cart_ids)).all()
 
@@ -121,8 +123,12 @@ def checkout():
         payment_method_types=['card'],
         line_items=line_items,
         mode='payment',
-        success_url='https://librepress-production.up.railway.app/success',
-        cancel_url='https://librepress-production.up.railway.app/cart'
+        success_url='https://librepress.us/success',
+        cancel_url='https://librepress.us/cart',
+        metadata={
+            'cart_ids': ','.join(str(id) for id in cart_ids),
+            'shipping': str(shipping_data)
+        }
     )
 
     return redirect(checkout_session.url)
@@ -131,8 +137,8 @@ def checkout():
 
 @app.route('/success')
 def success():
-    shipping = session.get('shipping', {})
-    cart_ids = session.get('cart', [])
+    shipping = session.get('shipping', {}),
+    cart_ids = session.get('cart', []),
     books = Book.query.filter(Book.id.in_(cart_ids)).all()
 
     for book in books:
@@ -187,9 +193,12 @@ def webhook():
     if event['type'] == 'checkout.session.completed':
         session_data = event['data']['object']
         customer_email = session_data.get('customer_details', {}).get('email')
+
+        metadata = session_data.get('metadata', {})
     
-        cart_ids = session.get('cart', [])
-        shipping = session.get('shipping', {})
+        cart_ids = [int(id) for id in metadata.get('cart_ids', '').split(',') if id]
+        shipping = eval(metadata.get('shipping', '{}'))
+
         books = Book.query.filter(Book.id.in_(cart_ids)).all()
 
         for book in books:
@@ -219,13 +228,13 @@ def webhook():
                 "shipping_level": "MAIL"
             }
         
-        result = create_print_job(order_data)
+            result = create_print_job(order_data)
         
-        if result:
-            print(f"Print job created for {book.title}")
-        else:
-            print(f"Print job failed for {book.title}")
-
+            if result:
+                print(f"Print job created for {book.title}")
+            else:
+                print(f"Print job failed for {book.title}")
+                
     return 'OK', 200
 
 # 404 - Page Not Found
