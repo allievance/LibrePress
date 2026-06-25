@@ -4,7 +4,7 @@ A lightweight, end-to-end publishing system for producing and distributing small
 
 ## Overview
 
-LibrePress is a self-hosted publishing storefront built for solo operators. It replaces the fragmented toolchain of traditional small-press publishing — CMS platforms, manual order handling, separate fulfillment workflows — with a single, integrated system.
+LibrePress is a self-hosted publishing storefront built for solo operators. It replaces the fragmented toolchain of traditional small-press publishing with a single, integrated system.
 
 Books are designed, typeset, and listed once. Orders are fulfilled automatically through Lulu's print-on-demand API. No inventory. No warehouse. No overhead.
 
