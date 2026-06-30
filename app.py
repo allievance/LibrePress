@@ -137,8 +137,8 @@ def checkout():
 
 @app.route('/success')
 def success():
-    shipping = session.get('shipping', {}),
-    cart_ids = session.get('cart', []),
+    shipping = session.get('shipping', {})
+    cart_ids = session.get('cart', [])
     books = Book.query.filter(Book.id.in_(cart_ids)).all()
 
     for book in books:
