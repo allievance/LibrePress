@@ -3,6 +3,7 @@ import os
 load_dotenv()
 from flask import Flask, render_template, request, abort, redirect, url_for, session
 import stripe
+import ast
 from models import db, Book
 from lulu import create_print_job
 
@@ -197,7 +198,7 @@ def webhook():
         metadata = session_data.get('metadata', {})
     
         cart_ids = [int(id) for id in metadata.get('cart_ids', '').split(',') if id]
-        shipping = eval(metadata.get('shipping', '{}'))
+        shipping = ast.literal_eval(metadata.get('shipping', '{}'))
 
         books = Book.query.filter(Book.id.in_(cart_ids)).all()
 
