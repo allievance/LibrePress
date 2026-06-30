@@ -101,6 +101,7 @@ def checkout():
         'state': request.form.get('state'),
         'zip_code': request.form.get('zip_code'),
         'country': request.form.get('country'),
+        'phone': request.form.get('phone'),
     }
 
     session['shipping'] = shipping_data
@@ -165,6 +166,7 @@ def success():
                 "state_code": shipping.get('state'),
                 "postcode": shipping.get('zip_code'),
                 "country_code": shipping.get('country'),
+                "phone_number": shipping.get('phone'),
             },
             "shipping_level": "MAIL"
         }
@@ -195,7 +197,7 @@ def webhook():
         session_data = event['data']['object']
         customer_email = session_data['customer_details']['email']
 
-        metadata = session_data.get('metadata', {})
+        metadata = session_data['metadata']
     
         cart_ids = [int(id) for id in metadata.get('cart_ids', '').split(',') if id]
         shipping = ast.literal_eval(metadata.get('shipping', '{}'))
@@ -225,6 +227,7 @@ def webhook():
                     "state_code": shipping.get('state'),
                     "postcode": shipping.get('zip_code'),
                     "country_code": shipping.get('country'),
+                    "phone_number": shipping.get('phone'),
                 },
                 "shipping_level": "MAIL"
             }
