@@ -139,39 +139,6 @@ def checkout():
 
 @app.route('/success')
 def success():
-    shipping = session.get('shipping', {})
-    cart_ids = session.get('cart', [])
-    books = Book.query.filter(Book.id.in_(cart_ids)).all()
-
-    for book in books:
-        order_data = {
-            "contact_email": shipping.get('email'),
-            "external_id": f"librepress-{book.id}",
-            "line_items": [
-                {
-                    "printable_normalization": {
-                        "cover": {"source_url": f"https://librepress.us/static/pdf/{book.cover_pdf}"},
-                        "interior": {"source_url": f"https://librepress.us/static/pdf/{book.interior_pdf}"},
-                        "pod_package_id": "0583X0827BWSTDPB060UC444MXX"
-                    },
-                    "quantity": 1,
-                    "title": book.title
-                }
-            ],
-            "shipping_address": {
-                "name": shipping.get('name'),
-                "street1": shipping.get('street1'),
-                "street2": shipping.get('street2'),
-                "city": shipping.get('city'),
-                "state_code": shipping.get('state'),
-                "postcode": shipping.get('zip_code'),
-                "country_code": shipping.get('country'),
-                "phone_number": shipping.get('phone'),
-            },
-            "shipping_level": "MAIL"
-        }
-        create_print_job(order_data)
-    
     session.pop('cart', None)
     session.pop('shipping', None)
     return render_template('success.html')
