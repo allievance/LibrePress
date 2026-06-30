@@ -162,7 +162,7 @@ def success():
                 "street1": shipping.get('street1'),
                 "street2": shipping.get('street2'),
                 "city": shipping.get('city'),
-                "state": shipping.get('state'),
+                "state_code": shipping.get('state'),
                 "postcode": shipping.get('zip_code'),
                 "country_code": shipping.get('country'),
             },
@@ -193,7 +193,7 @@ def webhook():
 
     if event['type'] == 'checkout.session.completed':
         session_data = event['data']['object']
-        customer_email = session_data.get('customer_details', {}).get('email')
+        customer_email = session_data['customer_details']['email']
 
         metadata = session_data.get('metadata', {})
     
