@@ -199,8 +199,8 @@ def webhook():
 
         metadata = session_data['metadata']
     
-        cart_ids = [int(id) for id in metadata.get('cart_ids', '').split(',') if id]
-        shipping = ast.literal_eval(metadata.get('shipping', '{}'))
+        cart_ids = [int(id) for id in metadata['cart_ids'].split(',') if id]
+        shipping = ast.literal_eval(metadata['shipping'])
 
         books = Book.query.filter(Book.id.in_(cart_ids)).all()
 
