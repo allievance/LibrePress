@@ -1,11 +1,19 @@
 from dotenv import load_dotenv
 import os
-load_dotenv()
-from flask import Flask, render_template, request, abort, redirect, url_for, session
-import stripe
 import ast
+
+from flask import Flask, render_template, request, abort, redirect, url_for, session
+from flask_mail import Mail, Message
+
+import stripe
+
 from models import db, Book
 from lulu import create_print_job
+
+
+load_dotenv()
+
+# Configuration
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///librepress.db'
@@ -14,6 +22,58 @@ app.config['SECRET_KEY'] = os.getenv('SECRET_KEY')
 db.init_app(app)
 stripe.api_key = os.getenv('STRIPE_SECRET_KEY')
 STRIPE_PUBLISHABLE_KEY = os.getenv('STRIPE_PUBLISHABLE_KEY')
+
+app.config['MAIL_SERVER'] = 'smtp-relay.brevo.com'
+app.config['MAIL_PORT'] = 587
+app.config['MAIL_USE_TLS'] = True
+app.config['MAIL_USE_SSL'] = False
+
+app.config['MAIL_USERNAME'] = os.getenv('BREVO_SMTP_LOGIN')
+app.config['MAIL_PASSWORD'] = os.getenv('BREVO_SMTP_KEY')
+
+app.config['MAIL_DEFAULT_SENDER'] = (
+    'LibrePress',
+    'info@librepress.us'
+)
+
+mail = Mail(app)
+
+def send_confirmation_email(customer_email, customer_name, books, shipping):
+    subject = "Your LibrePress Order Confirmation"
+
+    book_list = "\n".jooin([f"- {book.title} by {book.author}: ${book.price}" for book in books])
+
+    body = f"""Dear {customer_name},
+
+Thank you for your order from LibrePress.
+
+ORDER SUMMARY
+{book_list}
+
+SHIPPING TO
+{shipping.get('name')}
+{shipping.get('street1')}
+{shipping.get('street2', '')}
+{shipping.get('city')}, {shipping.get('state')} {shipping.get('zip_code')}
+{shipping.get('country')}
+
+Your book will be printed and shipped by Lulu. Estimated delivery is 15-20 business days depending on your location.
+
+If you have any questions about your order, please contact us at info@librepress.us.
+
+Thank you for supporting independent publishing.
+
+LibrePress
+librepress.us
+"""
+
+    msg = Message(
+        subject=subject,
+        recipients=[customer_email],
+        body=body
+    )
+
+    mail.send(msg)
 
 # Storefront
 
@@ -203,6 +263,12 @@ def webhook():
         
             if result:
                 print(f"Print job created for {book.title}")
+                send_confirmation_email(
+                    customer_email,
+                    shipping.get('name'),
+                    books,
+                    shipping
+                )
             else:
                 print(f"Print job failed for {book.title}")
                 
