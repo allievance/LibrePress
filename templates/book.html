@@ -22,7 +22,10 @@
             <li><strong>Binding Type:</strong> Paperback Perfect Bound</li>
             <li><strong>Cover Finish:</strong> Matte</li>
         </ul>
-        <a href="/add_to_cart?pk={{ book.id }}" class="add-to-cart">Add to cart</a>
+        <form action="/add_to_cart" method="POST">
+            <input type="hidden" name="pk" value="{{ book.id }}">
+            <button type="submit" class="add-to-cart">Add to cart</button>
+        </form>
     </div>
 </main>
 {% endblock %}

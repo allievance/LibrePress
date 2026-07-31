@@ -16,7 +16,10 @@
                 <h3>{{ book.author }}</h3>
                 <p class="cart-item-price">${{ book.price }}</p>
             </div>
-            <a href="/remove_from_cart?pk={{ book.id }}" class="remove-item">Remove</a>
+            <form action="/remove_from_cart" method="POST">
+                <input type="hidden" name="pk" value="{{ book.id }}">
+                <button type="submit" class="remove-item">Remove</button>
+            </form>
          </div>
          {% endfor %}
     </div>

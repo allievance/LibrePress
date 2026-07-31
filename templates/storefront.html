@@ -15,7 +15,7 @@
 			<a href="/book?pk={{ book.id }}">
 				<img src="{{ url_for('static', filename='img/' + book.cover_image) }}" alt="{{ book.title }}">
 			</a>
-			<a href="/book?pk={{ book.id }}" class="buy-now">Buy Now</a>
+		<a href="/book?pk={{ book.id }}" class="buy-now">Buy Now</a>
 		</div>
 		{% endfor %}
 	</div>

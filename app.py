@@ -4,48 +4,26 @@
 from dotenv import load_dotenv
 import os
 import ast
-
-from flask import Flask, render_template, request, abort, redirect, url_for, session
-from flask_mail import Mail, Message
-
-import stripe
-
-from models import db, Book
-from lulu import create_print_job
-
+import json
 
 load_dotenv()
 
+from flask import Flask, render_template, request, abort, redirect, url_for, session
+from flask_mail import Mail, Message
+import stripe
+from models import db, Book
+from lulu import create_print_job
+from config import Config
+
 # -------------------------------------------------------------------------------------
-# CONFIGURATION
+# CONFIRMATION EMAIL
 # -------------------------------------------------------------------------------------
-app = Flask(__name__)
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///librepress.db'
-app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-app.config['SECRET_KEY'] = os.getenv('SECRET_KEY')
-db.init_app(app)
-stripe.api_key = os.getenv('STRIPE_SECRET_KEY')
-STRIPE_PUBLISHABLE_KEY = os.getenv('STRIPE_PUBLISHABLE_KEY')
-
-app.config['MAIL_SERVER'] = 'smtp-relay.brevo.com'
-app.config['MAIL_PORT'] = 587
-app.config['MAIL_USE_TLS'] = True
-app.config['MAIL_USE_SSL'] = False
-
-app.config['MAIL_USERNAME'] = os.getenv('BREVO_SMTP_LOGIN')
-app.config['MAIL_PASSWORD'] = os.getenv('BREVO_SMTP_KEY')
-
-app.config['MAIL_DEFAULT_SENDER'] = (
-    'LibrePress',
-    'info@librepress.us'
-)
-
-mail = Mail(app)
+mail = Mail()
 
 def send_confirmation_email(customer_email, customer_name, books, shipping):
     subject = "Your LibrePress Order Confirmation"
 
-    book_list = "\n".jooin([f"- {book.title} by {book.author}: ${book.price}" for book in books])
+    book_list = "\n".join([f"- {book.title} by {book.author}: ${book.price}" for book in books])
 
     body = f"""Dear {customer_name},
 
@@ -80,6 +58,21 @@ librepress.us
     mail.send(msg)
 
 # -------------------------------------------------------------------------------------
+# CREATE APP
+# -------------------------------------------------------------------------------------
+def create_app():
+    app = Flask(__name__)
+    app.config.from_object(Config)
+
+    db.init_app(app)
+    mail.init_app(app)
+    stripe.api_key = app.config['STRIPE_SECRET_KEY']
+
+    return app
+
+app = create_app()
+
+# -------------------------------------------------------------------------------------
 # ROUTES
 # -------------------------------------------------------------------------------------
 
@@ -108,9 +101,9 @@ def about():
 
 # Add-to-cart
 
-@app.route('/add_to_cart')
+@app.route('/add_to_cart', methods=['POST'])
 def add_to_cart():
-    pk = request.args.get('pk')
+    pk = request.form.get('pk')
     if not pk:
         return abort (400)
     pk = int(pk)
@@ -131,9 +124,9 @@ def cart():
 
 # Remove-from-Cart
 
-@app.route('/remove_from_cart')
+@app.route('/remove_from_cart', methods=['POST'])
 def remove_from_cart():
-    pk = request.args.get('pk')
+    pk = request.form.get('pk')
     if not pk:
         return abort(400)
     pk = int(pk)
@@ -197,7 +190,7 @@ def checkout():
         cancel_url='https://librepress.us/cart',
         metadata={
             'cart_ids': ','.join(str(id) for id in cart_ids),
-            'shipping': str(shipping_data)
+            'shipping': json.dumps(shipping_data)
         }
     )
 
@@ -235,7 +228,7 @@ def webhook():
         metadata = session_data['metadata']
     
         cart_ids = [int(id) for id in metadata['cart_ids'].split(',') if id]
-        shipping = ast.literal_eval(metadata['shipping'])
+        shipping = json.loads(metadata['shipping'])
 
         books = Book.query.filter(Book.id.in_(cart_ids)).all()
 
@@ -248,7 +241,7 @@ def webhook():
                         "printable_normalization": {
                             "cover": {"source_url": f"https://librepress.us/static/pdf/{book.cover_pdf}"},
                             "interior": {"source_url": f"https://librepress.us/static/pdf/{book.interior_pdf}"},
-                            "pod_package_id": "0583X0827BWSTDPB060UC444MXX"
+                            "pod_package_id": app.config['POD_PACKAGE_ID']
                         },
                         "quantity": 1,
                         "title": book.title
@@ -294,11 +287,13 @@ def page_not_found(e):
 def internal_server_error(e):
     return render_template('500.html'), 500
 
-# Reseed function - DO NOT SHARE
+# Reseed - DO NOT SHARE
 
-@app.route('/admin/reseed?key=19$k0p$+y12')
+@app.route('/admin/reseed', methods=['POST'])
 def reseed():
-    Book.query.delete()
+    key = request.form.get('key')
+    if key != os.getenv('RESEED_KEY'):
+        return abort(403)
     db.session.commit()
     
     books = [
